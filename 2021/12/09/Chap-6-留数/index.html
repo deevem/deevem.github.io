@@ -1,99 +1,72 @@
-extends includes/layout.pug
-
-block content
-  -
-    const prev = page.prev
-    const next = page.next
-    const dateConf = theme.post.date
-    const updatedConf = theme.post.updated
-    const sourceConf = theme.post.source
-    const excerptConf = theme.post.excerpt
-    const reward = theme.post.reward
-    const appID = theme.valine.app_id
-    const appKey = theme.valine.app_key
-    const tocContent = toc(page.content, theme.toc)
-  #post-bg
-    #post-title
-      if (dateConf || updatedConf) && page.post-info
-        #post-info
-          if dateConf
-            span date:
-              time(datetime=page.date.toJSON())#date
-                = ' ' + date(page.date, date_format)
-          if dateConf && updatedConf
-            br
-          if updatedConf
-            span updated:
-              time(datetime=page.updated.toJSON())#updated
-                = ' ' + date(page.updated, date_format)
-          if sourceConf
-            br
-            span#post-source Source File:
-              br
-              span= page.source
-      h1= page.title
-      hr
-    #post-content
-      if excerptConf
-        != page.content
-      else
-        != page.more
-      #paginator!= paginator()
-    #post-footer
-      if prev || next
-        hr
-      if prev !== undefined
-        a(href=url_for(prev.path))
-          |← Prev
-          =' ' + prev.title
-      if prev && next
-        <span style="color: #fe2"> | </span>
-      if next !== undefined
-        a(href=url_for(next.path))
-          =next.title + ' '
-          |Next →
-      if prev || next
-        hr
-    #bottom-btn
-      if tocContent.length > 0
-        a#to-index(href="#post-index" title="index") ≡
-      a#to-top(href="#post-title" title="to top") ∧
-    if reward === true && page.reward
-      details#reward
-        summary 打赏
-        #alipay
-          span 支付宝 | Alipay
-          br
-          img(src= config.root + 'img/Alipay.png')
-        #wechat
-          span 微信 | WeChat
-          br
-          img(src= config.root + 'img/WeChat.png')
-    if page.comments
-      if theme.valine.enable === true
-        #Valine
-        script
-          |new Valine({
-          |  el: '#Valine'
-          |  , appId: '#{appID}'
-          |  , appKey: '#{appKey}'
-          |  , placeholder: '此条评论委托企鹅物流发送'
-          |})
-      if theme.gitalk.enable === true
-        #comments
-        script
-          |var gitalk = new Gitalk({
-          |  clientID: '#{theme.gitalk.clientID}',
-          |  clientSecret: '#{theme.gitalk.clientSecret}',
-          |  repo: '#{theme.gitalk.repo}',
-          |  owner: '#{theme.gitalk.owner}',
-          |  admin: [#{theme.gitalk.admin}],
-          |  id: location.pathname,
-          |})
-          |gitalk.render("comments")
-
-block aside-block
-  - const tocContent = toc(page.content, theme.toc)
-  if (tocContent.length > 0)
-    h1 INDEX
-    #post-index!= tocContent
+<!DOCTYPE html><html lang="en,zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Chap 6 留数 | THU SS Survival Manual</title><script src="//unpkg.com/valine/dist/Valine.min.js"></script><link rel="stylesheet" href="/css/arknights.css"><link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/styles/atom-one-dark-reasonable.min.css"><style>@font-face {
+ font-family: BenderLight;
+ src: local('Bender'), url("/font/BenderLight.ttf");
+}
+@font-face {
+ font-family: 'JetBrains Mono';
+ src: local('JetBrains Mono'), url('/font/JetBrainsMono-Regular.woff2') format('woff2');
+}</style><meta name="generator" content="Hexo 5.4.0"></head><body><header><nav><a href="/">Home</a><a href="/archives/">Archives</a></nav></header><main><article><div id="post-bg"><div id="post-title"><h1>Chap 6 留数</h1><hr></div><div id="post-content"><h1 id="Chap-6-留数"><a href="#Chap-6-留数" class="headerlink" title="Chap 6 留数"></a>Chap 6 留数</h1><p>该单元内，我们将以洛朗级数为工具，对解析函数的孤立奇点进行分析，再对函数在孤立奇点邻域内的性质进行研究。</p>
+<p>奇点定义：函数在该点不解析的点</p>
+<h2 id="1-孤立奇点"><a href="#1-孤立奇点" class="headerlink" title="1 孤立奇点"></a>1 孤立奇点</h2><ol>
+<li><strong>定义</strong>：$f(z)$ 在 $z_0$ 点不解析，但在某个 $B_\delta^*(z_0)$ 内解析，则称 $z_0$ 为 $f(z)$ 的孤立奇点。</li>
+</ol>
+<p>Ex: 原点是 $\frac {\sin z} z, \frac {\sin z} {z^{2021}}, e^{\frac 1 z}$ 的孤立奇点。</p>
+<p>Ex: 原点不是 $\frac 1 {\sin \frac 1 z}$ 的孤立奇点（奇点为 0 或 $\frac 1 {k\pi},k \in N$，而$\forall \epsilon &gt; 0, \exist k \in N,s.t. \frac 1 {k\pi} &lt;\epsilon$）</p>
+<ol start="2">
+<li><p><strong>分类</strong>：设 $z_0 \in \C$ 为 $f(z)$ 的孤立奇点，$\Rightarrow$ $f(z) = \sum\limits_{n = -\infin}^{\infin}C_n(z- z_0)^n, z \in B_\delta^*(z_0)$</p>
+<ul>
+<li><p><strong>可去奇点</strong>：若 Laurent 展式中不含负幂项（成为幂级数）</p>
+<p>$f(z) = \sum\limits_{n = 0} ^\infin C_n(z - z_0)^n: 0 &lt; |z-z_0|&lt;\sigma$</p>
+<p>$\Rightarrow \lim\limits_{z \rightarrow z_0} f(z) = c_0$，若补充定义 $f(z_0) = c_0$，则 $f(z)$ 在 $z_0$ 解析</p>
+<p>Ex: (1) $\frac {\sin z} z = 1 - \frac {z^2} {3!} + \frac {z^4} {5!}-\cdots,0 &lt; \abs{z} &lt; +\infin$</p>
+<p>​            令 $f(z) = \begin{cases} \frac{\sin z} z, z \ne 0 \ 1,\ \ \ \ \ z = 0 \end{cases}$，则 $f(z)$ 为整函数（提供了一个创造整函数的方法：收敛半径无穷大）</p>
+<p>​      (2)$\frac {\ln(1+z)} z = 1 - \frac z 2 + \frac {z^2} 3 -\cdots  ,0&lt;z&lt;1$ </p>
+<hr>
+<p>Thm: 设 $z_0$ 为 $f(z)$ 孤立奇点，则下列三条等价：</p>
+<p>(1) $z_0$ 为可去奇点</p>
+<p>(2) $\lim\limits_{z \rightarrow z_0} f(z) = A \in \C$</p>
+<p>(3) $f(z)$ 在某个 $B_\delta^*(z_0)$ 内有界</p>
+<p>Proof: (1) $\rightarrow$ (2), (2) $\rightarrow$ (3) 显然</p>
+<p>(3) $\rightarrow$ (1):<br>$$<br>\begin{aligned}<br>&amp;\abs{f(z)} \le M &lt; +\infin,\<br>&amp;C_n = \frac 1 {2\pi i } \oint_{C_r}\frac {f(z)dz} {(z-z_0)^{n+1}}(n \le -1), C_r :\abs{z - z_0} = r,0 &lt; r &lt; \delta\<br>&amp;\abs{C_n} \le \frac 1 {2\pi} \oint_{C_r}\frac{\abs{f(z)} \abs{dz}} {\abs{z - z_0}^{n+1}} \le \frac 1 {2\pi} \oint_{C_r}\frac {Mds} {r^{n+1}} = \frac M {r^n} \stackrel {r \rightarrow 0} \rightarrow 0\<br>\end{aligned}<br>$$<br>因此没有负幂项，$z_0$ 为可去奇点</p>
+</li>
+<li><p><strong>m($\ge 1$)级极点</strong>：若 Laurent 展式中含有有限个幂项，且最高负幂项为 $\frac {C_{-m}} {(z - z_0)^m},C_{-m} \ne 0$</p>
+<p><strong>简单极点</strong>：m = 1</p>
+<p>$f(z) = \frac {C_{-m}} {(z - z_0)^{-m}} + \cdots + C_0 + \cdots,0 &lt; \abs{z - z_0} &lt; \delta$</p>
+<p>$ = \frac {g(z)} {(z - z_0)^m}, g(z) = C_{-m} + C_{-m+1}(z-z_0) + \cdots,g(z_0) \ne 0$(由此可以看出极点与零点之间存在类似倒数关系)</p>
+<p>$\Rightarrow \lim\limits_{z\rightarrow z_0}f(z) = \infin$</p>
+<p>Ex: $\frac {\sin z} {z^{2021}}$ 为原点 2020 级极点</p>
+<p>​    $\frac z {\sin ^{2021} x}$ 为原点 2020 级极点</p>
+<hr>
+<p>Thm: 设 $z_0$ 为 $f(z)$ 孤立奇点，则下列四条等价：</p>
+<p>(1) $z_0$ 为 $f(z)$ 的 $m$ 级极点\</p>
+<p>(2) 存在某 $B_\delta(z_0)$ 上解析函数 $g(z) (g(z_0) \ne 0)$ s.t. $f(z) = \frac{g(z)} {(z-z_0)^m} (z \in B^*_\delta(z_0))$</p>
+<p>(3) $\lim\limits_{z \rightarrow z_0} (z-z_0)^m f(z) = A$</p>
+<p>(4) $z_0$ 为 $\frac 1 {f(z)}$ 的 $m$ 级零点 (可去意义下)</p>
+<p>Proof: (1) $\rightarrow$ (2), (2) $\rightarrow$ (3), (2) $\rightarrow$ (1)显然</p>
+<p>(3) $\rightarrow$ (4):<br>$$<br>\begin{aligned}<br>&amp;g(z) = (z - z_0)^mf(z)\<br>&amp;\Rightarrow \lim\limits_{z \rightarrow z_0} g(z) = A \ne 0 \Rightarrow 可认为g(z) 在B_\delta^*(z_0)上解析，且g(z_0) = A \ne 0\<br>&amp;\Rightarrow \frac 1 {f(z)} = (z- z_0)^m\phi(z),\phi(z) = \frac 1 {g(z)}, 在B_\delta^*上解析,\phi(z_0) = \frac 1 A \ne 0<br>\end{aligned}</p>
+<p>$$</p>
+</li>
+<li><p><strong>本性奇点</strong>：若 Laurent 展式中含无穷个负幂项</p>
+<p>$f(z) = \sum\limits_{n = -\infin}^\infin C_n(z - z_n)^n: z \in B_\delta^*(z_0)$</p>
+<p>Weierstrass 定理：设 $z_0 \in \C$ 为 $f(z)$ 本性奇点，则对 $\forall A \in \bar \C,\exist {z_n}_{n=1}^\infin \sub B_\delta^*(z_0),s.t.$</p>
+<p>(1) $\lim\limits_{n \rightarrow \infin} z_n = z_0$</p>
+<p>(2) $\lim\limits_{n\rightarrow \infin} f(z_n) = A$</p>
+<p>Picard 定理：设 $z_0$​ 为 $f(z)$​ 本性奇点，则对 $\forall A \in \C$​（最多有一个例外 $A_0$​）,$\exist {z_n}_{n=1}^\infin \sub B_\delta^*(z_0),s.t.$</p>
+<p>(1) $\lim\limits_{n \rightarrow \infin} z_n = z_0$</p>
+<p>(2) $f(z_n) \equiv A ,\forall n( \ge 1)$</p>
+</li>
+</ul>
+</li>
+</ol>
+<h2 id="2-infin-作为奇点"><a href="#2-infin-作为奇点" class="headerlink" title="2 $\infin$作为奇点"></a>2 $\infin$作为奇点</h2><p><strong>定义</strong>：若 $f(z)$ 在 $\infin$ 某空心邻域 $R &lt; \abs{z} &lt; \infin$ 内解析，则称 $\infin$ 是 $f(z)$ 的孤立奇点，否则称其为非孤立奇点</p>
+<p>可通过倒数变换将 $\infin$ 变换到原点:</p>
+<p>设 $\infin$ 是 $f(z)$ 孤立奇点，则：<br>$$<br>\begin{aligned}<br>&amp;f(z) = \sum\limits_{n = -\infin}^\infin C_n z^n, R &lt; \abs{z} &lt; +\infin \ &amp;\stackrel {\zeta = \frac 1 z} \Rightarrow \varphi (\zeta) = \sum\limits_{n = -\infin}^\infin C_{-n} \zeta^n : 0 &lt; \abs{\zeta} &lt; \frac 1 R<br>\end{aligned}<br>$$</p>
+<p><strong>定义</strong>：说 $\infin$ 是 $f(z)$ 的 $\begin{cases}可去奇点 \ n(\ge1)级极点 \ 本性奇点 \end{cases}$，若 $\zeta = 0$ 是 $\varphi(\zeta)$ 的对应奇点($f(z)$负幂项对应$\varphi(z)$正幂项)</p>
+<p>Ex: (1) $\frac z {z+1}$：可去奇点</p>
+<p>(2) $z +\frac 1 z$：简单极点</p>
+<p>(3) $e^z$：本性奇点</p>
+<h2 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h2><p>若 $z_0 \in \bar \C$ 为 $f(z)$ 孤立极点，则：</p>
+<p>(1) 可去奇点 $\Leftrightarrow \lim\limits_{z\rightarrow z_0} f(z) = A \in \C$</p>
+<p>(2) 极点 $\Leftrightarrow \lim\limits_{z\rightarrow z_0} f(z) = \infin$</p>
+<p>(3) 本性奇点 $\Leftrightarrow \lim\limits_{z\rightarrow z_0}f(z)$ 不存在也不为 $\infin$</p>
+<div id="paginator"></div></div><div id="post-footer"><hr><a href="/2021/12/10/hello-world/">← Prev Hello World</a><span style="color: #fe2"> | </span><a href="/2021/12/09/RangeSearching-translated/">RangeSearching(translated) Next →</a><hr></div><div id="bottom-btn"><a id="to-index" href="#post-index" title="index">≡</a><a id="to-top" href="#post-title" title="to top">∧</a></div></div></article><aside><div id="about"><a href="/" id="logo"><img src="https://ak.hypergryph.com/assets/index/images/ak/pc/faction/1.png" alt="Logo"></a><h1 id="Dr"><a href="/"> Dr.Devem</a></h1><section id="total"><a id="total-archives" href="/archives"><span class="total-title">Archives Total:</span><span class="total-number">3</span></a><div id="total-tags"><span class="total-title">Tags:</span><span class="total-number">3</span></div><div id="total-categories"><span class="total-title">Categories:</span><span class="total-number">1</span></div></section></div><div id="aside-block"><h1>INDEX</h1><div id="post-index"><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#Chap-6-%E7%95%99%E6%95%B0"><span class="toc-number">1.</span> <span class="toc-text">Chap 6 留数</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#1-%E5%AD%A4%E7%AB%8B%E5%A5%87%E7%82%B9"><span class="toc-number">1.1.</span> <span class="toc-text">1 孤立奇点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#2-infin-%E4%BD%9C%E4%B8%BA%E5%A5%87%E7%82%B9"><span class="toc-number">1.2.</span> <span class="toc-text">2 $\infin$作为奇点</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%80%BB%E7%BB%93%EF%BC%9A"><span class="toc-number">1.3.</span> <span class="toc-text">总结：</span></a></li></ol></li></ol></div></div><footer><nobr><span class="text-title">©</span><span class="text-content">1970 to 2020</span></nobr><wbr><nobr><span class="text-title">ICP</span><span class="text-content">——备案号——</span></nobr><wbr><wbr><nobr>published with&nbsp;<a target="_blank" rel="noopener" href="http://hexo.io">Hexo&nbsp;</a></nobr><wbr><nobr>Theme&nbsp;<a target="_blank" rel="noopener" href="https://github.com/Yue-plus/hexo-theme-arknights">Arknight&nbsp;</a></nobr><wbr><nobr>by&nbsp;<a target="_blank" rel="noopener" href="https://github.com/Yue-plus">Yue_plus</a></nobr></footer></aside></main><canvas id="canvas-dust"></canvas><script src="/js/arknights.js"></script><script src="https://cdn.bootcdn.net/ajax/libs/highlight.js/10.1.2/highlight.min.js"></script></body></html>
